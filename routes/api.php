@@ -2,6 +2,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\TraiteurController;
+use App\Http\Controllers\API\DecorationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource("traiteurs", TraiteurController::class);
 Route::apiResource("specialitees", TraiteurController::class);
+Route::apiResource("decorations", DecorationController::class);
