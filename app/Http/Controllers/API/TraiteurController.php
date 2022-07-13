@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Models\Traiteur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class TraiteurController extends Controller
 {
@@ -15,7 +16,15 @@ class TraiteurController extends Controller
      */
     public function index()
     {
-        //
+        $traiteur = DB::table('traiteurs')
+        ->get()
+        ->toArray(); 
+
+        // retourne les infos utilsateurs en format JSON
+        return response()->json([
+            'status' => "Success",
+            'date' =>$traiteur,
+        ]);
     }
 
     /**
@@ -26,7 +35,23 @@ class TraiteurController extends Controller
      */
     public function store(Request $request)
     {
-        //
+//Enregistrement de nouvelles données dans la base        
+        $request->validate ([
+            'nameEntreprise' => 'required|max:100',
+            'phoneNumber' => 'required|max:100', //Attention ecriture deans le schema identique mais sur php my admin écriture phone_number
+            'email' => 'required|max:100',
+        ]);
+//On créer un nouveau traiteur 
+        $traiteur = Traiteur::create([
+            'nameEntreprise' => $request ->nameEntreprise, 
+            'phoneNumber' => $request -> phoneNumber, 
+            'email' =>   $request -> email,  
+        ]);
+// On retourne les informations du nouvel utilisateur en JSON
+return response()->json([
+    'status' => 'Success',
+    'data' => $traiteur
+]);
     }
 
     /**
@@ -37,7 +62,7 @@ class TraiteurController extends Controller
      */
     public function show(Traiteur $traiteur)
     {
-        //
+        return response()->json($traiteur);
     }
 
     /**
@@ -49,7 +74,19 @@ class TraiteurController extends Controller
      */
     public function update(Request $request, Traiteur $traiteur)
     {
-        //
+        $this->validate($request, [
+            'nameEntreprise' => 'required|max:100',
+            'phoneNumber' => 'required|max:100', 
+            'email' => 'required|max:100',
+        ]);
+        $traiteur->update ([
+            'nameEntreprise' => $request ->nameEntreprise, 
+            'phoneNumber' => $request -> phoneNumber, 
+            'email' =>   $request -> email,
+        ]);
+
+        return response()->json([
+            'status' => 'Mise à jour avec succès',]);
     }
 
     /**
@@ -60,6 +97,8 @@ class TraiteurController extends Controller
      */
     public function destroy(Traiteur $traiteur)
     {
-        //
+        $traiteur->delete();
+        return response()->json([
+            'status' => 'Supprimer avec succès avec succèss']);
     }
 }
