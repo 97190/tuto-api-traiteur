@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Specialite extends Model
 {
     use HasFactory;
-    protected $fillable = ['entree', 'plat', 'dessert'];
+    protected $fillable = ['entree', 'plat', 'dessert','id_traiteur'];
 }

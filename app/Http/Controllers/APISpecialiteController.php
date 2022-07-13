@@ -17,11 +17,13 @@ class APISpecialiteController extends Controller
     public function index()
     {
         $specialites = DB::table('specialites')
-->get()
-->toArray();
-return response()->json([
-'status' => 'Success',
-'data' => $specialites,
+        ->join('traiteur','traiteur_id', '=', 'specialites.traiteur_id')
+        ->get()
+        ->toArray();
+
+        return response()->json([
+        'status' => 'Success',
+        'data' => $specialites,
 ]);
     }
 
@@ -42,7 +44,8 @@ return response()->json([
         $specialite = Specialite::create([
             'entree' => $request ->entree, 
             'plat' => $request -> plat, 
-            'dessert' =>   $request -> dessert,  
+            'dessert' =>   $request -> dessert, 
+            'traiteur_id' => $request ->traiteur_id, 
         ]);
 
         return response()->json([
@@ -75,6 +78,7 @@ return response()->json([
             'entree' => 'required|max:100',
             'plat' => 'required|max:100', 
             'dessert' => 'required|max:100',
+            'traiteur_id' => $request ->traiteur_id, // Normal la request dans les validates ? 
         ]);
         $specialite->update ([
             'entree' => $request ->entree, 
